@@ -1,11 +1,20 @@
+
 package com.example.linkedtreesidebranchview
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.WindowManager
+import com.example.treesidebranchview.TreeSideBranchView
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        TreeSideBranchView.create(this)
+        fullScreen()
     }
+}
+
+fun MainActivity.fullScreen() {
+    supportActionBar?.hide()
+    window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
 }
