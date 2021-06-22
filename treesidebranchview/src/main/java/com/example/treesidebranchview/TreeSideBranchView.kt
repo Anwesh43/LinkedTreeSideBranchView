@@ -192,4 +192,27 @@ class TreeSideBranchView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : TreeSideBranchView) {
+
+        private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+        private val tsb : TreeSideBranch = TreeSideBranch(0)
+        private val animator : Animator = Animator(view)
+
+        fun render(canvas : Canvas) {
+            canvas.drawColor(backColor)
+            tsb.draw(canvas, paint)
+            animator.animate {
+                tsb.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            tsb.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
