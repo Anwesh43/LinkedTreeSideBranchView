@@ -32,7 +32,7 @@ fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this -  i * n.invers
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
 
 fun Canvas.drawTreeSideBranch(scale : Float, w : Float, h : Float, paint : Paint) {
-    val size : Float = Math.min(w, h) / strokeFactor
+    val size : Float = Math.min(w, h) / sizeFactor
     val r : Float = Math.min(w, h) / rFactor
     val sc1 : Float = scale.divideScale(0, parts)
     val sc2 : Float = scale.divideScale(1, parts)
@@ -41,18 +41,20 @@ fun Canvas.drawTreeSideBranch(scale : Float, w : Float, h : Float, paint : Paint
     val sc5 : Float = scale.divideScale(4, parts)
     val gap : Float = (h * 0.8f)  / branches
     save()
-    drawLine(0f, h - h * sc5, 0f, h - h * sc1, paint)
-    for (j in 0..(10)) {
+    drawLine(w / 2, h - h * sc5, w / 2, h - h * sc1, paint)
+    for (j in 0..(branches - 1)) {
         val sk : Float = 1f - 2 * (j % 2)
         save()
         translate(w / 2 + (w / 2 + size) * sc4 * sk, h * 0.1f + gap * j)
-        drawLine(0f, 0f, size * sk * sc2, 0f, paint)
-        drawCircle(
-            size * sk * Math.floor(sc2.toDouble()).toFloat(),
-            0f,
-            r * sc3,
-            paint
-        )
+        if (sc2 > 0f) {
+            drawLine(0f, 0f, size * sk * sc2, 0f, paint)
+            drawCircle(
+                size * sk * Math.floor(sc2.toDouble()).toFloat(),
+                0f,
+                r * sc3,
+                paint
+            )
+        }
         restore()
     }
     restore()
@@ -63,6 +65,7 @@ fun Canvas.drawTSBNode(i : Int, scale : Float, paint : Paint) {
     val h : Float = height.toFloat()
     paint.color = colors[i]
     paint.strokeCap = Paint.Cap.ROUND
+    paint.strokeWidth = Math.min(w, h) / strokeFactor
     drawTreeSideBranch(scale, w, h, paint)
 }
 
