@@ -217,4 +217,13 @@ class TreeSideBranchView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : TreeSideBranchView {
+            val view : TreeSideBranchView = TreeSideBranchView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
